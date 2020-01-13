@@ -1,0 +1,50 @@
+1.  CREATE VIEW SUPERVISION_INFO AS
+	SELECT INSTRUCTOR.InstructorId AS IId, INSTRUCTOR.FName AS IFName, INSTRUCTOR.LName AS ILName, 
+		PHDSTUDENTS.StudentId AS SId, PHDSTUDENTS.FName AS SFName, PHDSTUDENTS.LName AS SLName, 
+		PHDSTUDENTS.StSem AS SStSem, PHDSTUDENTS.StYear AS SSTYear
+	FROM instructor, phdstudents
+	WHERE phdstudents.Supervisor=instructor.INSTRUCTORID
+	
+2.a Select IId, IFName, ILName, COUNT(IId) AS NoOfStudentsSupervised
+	FROM supervision_info
+	GROUP BY IId
+	
+  b SELECT SFName, SLName
+	FROM `supervision_info` 
+	WHERE IFName='Ahmed' AND ILName='Sarhan'
+	
+  c SELECT IFName, ILName
+	FROM `supervision_info` 
+	WHERE (SFName='Ife' AND SLName='Jelani') OR (SFName='Maya' AND SLName='Smith') OR (SFName='Raymond' AND SLName='Wilson')
+	
+3.1 SELECT S.StudentId, S.FName, S.LName, M.MName, MP.PassDate 
+	FROM phdstudents AS S, milestonespassed AS MP, milestone AS M 
+	WHERE S.StudentId=MP.StudentId AND MP.MId=M.MID
+	
+  2 SELECT S.StudentId, S.FName, S.LName, G.GrantTitle 
+	FROM phdstudents AS S, gra, grants AS G 
+	WHERE S.StudentId=gra.StudentId AND gra.Funding=G.AccountNo	
+	
+  3 SELECT S.StudentId, S.FName, S.LName, C.CName 
+	FROM phdstudents AS S, gta, section AS SE, course as C 
+	WHERE S.StudentId=GTA.StudentId AND gta.SectionId=SE.SectionId AND SE.CourseId=C.CourseId
+	
+  4 DELETE FROM phdstudents
+	WHERE phdstudents.StudentId='AW1023'
+	
+  5 INSERT INTO `gta` (`SectionId`, `MonthlyPay`, `StudentId`) VALUES ('CSE5322-003', 2000, 'AB2903')
+    INSERT INTO `gta` (`SectionId`, `MonthlyPay`, `StudentId`) VALUES ('CSE5322-003', 2000, 'AB000')
+	INSERT INTO `phdstudents` (`StudentId`, `FName`, `LName`, `StSem`, `StYear`, `Supervisor`) VALUES (NULL,'Abimbola', 'Abioye', 'Fall', '2016', 'AO5671')
+	
+  6 SELECT I.FName, I.LName, COUNT(S.Supervisor) AS NoOfStudents, I.StartDate
+	FROM instructor AS I LEFT JOIN phdstudents AS S ON I.INSTRUCTORID=S.Supervisor
+	WHERE I.StartDate > '1989-12-25' 
+	GROUP BY I.FName, I.LName
+	
+  7 SELECT S.FName, S.LName, S.StYear, M.MName
+	FROM phdstudents AS S, milestonespassed AS MP, milestone AS M
+	WHERE S.StudentId=MP.StudentId AND MP.MId=M.MID AND S.StYear >= 2017 AND MP.PassDate > '2018-05-01'
+
+
+
+
